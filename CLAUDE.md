@@ -1,5 +1,53 @@
 # TimeLens - Claude Code Instructions
 
+## Security & Privacy Rules (CRITICAL)
+
+**READ THIS FIRST. These rules are non-negotiable.**
+
+### Never Commit Secrets
+NEVER hardcode or commit any of the following to git:
+- API keys (e.g., `AIza...`, `sk-...`, `ghp_...`)
+- OAuth client IDs and secrets
+- Database credentials
+- Private keys or certificates
+- Tokens of any kind
+
+**Before every commit**, verify no secrets are staged:
+```bash
+git diff --cached | grep -iE "(api_key|apikey|secret|password|token|AIza|sk-)"
+```
+
+### Never Commit PII
+NEVER commit personally identifiable information:
+- Email addresses
+- Phone numbers
+- Real names (unless public/authorized)
+- Physical addresses
+- Any user data
+
+### Where to Store Sensitive Data
+- **CLAUDE.local.md** - Gitignored file for API keys, project IDs, tester emails
+- **Environment variables** - For runtime secrets
+- **--dart-define** - For build-time secrets in Flutter
+- **.template files** - Commit templates, gitignore the real files
+
+### Files That Must Be Gitignored
+```
+CLAUDE.local.md           # Local secrets and PII
+android/app/google-services.json  # Firebase config with API keys
+ios/Runner/GoogleService-Info.plist  # iOS Firebase config
+.env                      # Environment variables
+*.keystore               # Signing keys
+```
+
+### If You Accidentally Commit Secrets
+1. **Immediately** rewrite git history to remove them
+2. **Rotate** all exposed credentials
+3. **Verify** removal with `git log -p --all -S "secret_pattern"`
+4. **Force push** to overwrite remote history
+
+---
+
 ## Versioning
 
 Follow semantic versioning (semver.org) for all releases:
@@ -25,20 +73,20 @@ Update the version in `pubspec.yaml` before each build that will be distributed.
 
 When adding testers, use `firebase appdistribution:testers:add` first, then add them to an existing release rather than re-uploading the binary.
 
-## Secrets Management
+## Build Commands
 
-**NEVER commit API keys, secrets, or credentials to git.** Use these patterns:
-
-- **Gemini API key**: Pass via `--dart-define=GEMINI_API_KEY=xxx` at build time
-- **Firebase config**: `google-services.json` is gitignored; use the `.template` file as reference
-- **Other secrets**: Store in `CLAUDE.local.md` (gitignored) or environment variables
-
-Build commands:
+Always use the build commands from `CLAUDE.local.md` which include the required API keys:
 ```bash
-flutter build apk --debug --dart-define=GEMINI_API_KEY=xxx
-flutter run --dart-define=GEMINI_API_KEY=xxx
+# Get the actual command from CLAUDE.local.md - it has the real API key
+flutter build apk --debug --dart-define=GEMINI_API_KEY=<from_CLAUDE.local.md>
 ```
 
 ## Local Configuration
 
-See `CLAUDE.local.md` for sensitive project information (API keys, tester emails, project IDs). That file is git-ignored and not committed to the repository.
+See `CLAUDE.local.md` for:
+- Actual API keys and credentials
+- Tester email addresses
+- Project IDs and Firebase app IDs
+- Any other sensitive configuration
+
+That file is git-ignored and must never be committed.
