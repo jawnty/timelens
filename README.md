@@ -3,7 +3,7 @@
 A mobile app that transforms your photos into different historical eras using AI. Take a selfie and see yourself in the 1920s, 1950s, 1970s, 1980s, or Y2K era.
 
 <p align="center">
-  <img src="docs/app_icon_draft.png" alt="TimeLens Icon" width="150">
+  <img src="docs/app_icon_draft2.png" alt="TimeLens Icon" width="150">
 </p>
 
 ## Features
