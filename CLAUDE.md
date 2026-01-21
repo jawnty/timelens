@@ -73,6 +73,19 @@ Update the version in `pubspec.yaml` before each build that will be distributed.
 
 When adding testers, use `firebase appdistribution:testers:add` first, then add them to an existing release rather than re-uploading the binary.
 
+### Deployment Guidelines
+
+**DO NOT deploy for every small fix.** Deployments notify all testers and are disruptive.
+
+- **Batch changes** - Accumulate multiple fixes/improvements before deploying
+- **Ask before deploying** - Always check with the user before running `firebase appdistribution:distribute`
+- **Only deploy when**:
+  - User explicitly requests a deployment
+  - A critical bug fix is needed (app crashing, security issue)
+  - A meaningful set of changes is ready for testing
+
+When making code changes, commit to git but wait for user approval before building and distributing.
+
 ## Build Commands
 
 Always use the build commands from `CLAUDE.local.md` which include the required API keys:
