@@ -27,7 +27,9 @@ const List<Era> eras = [
 
 CRITICAL RULES:
 - DO NOT add any people, objects, or elements that are not in the original photo
-- Only transform what already exists in the image
+- PRESERVE exact faces, facial features, and identity of all people and animals
+- DO NOT alter facial structure, skin tone, age, or body type
+- Only change hairstyles, clothing, and surroundings - never the actual face
 - Preserve the exact composition and subjects
 
 PHOTOGRAPHY STYLE:
@@ -43,7 +45,7 @@ IF OBJECTS/ROOMS ARE PRESENT - transform to 1920s style:
 - Dark wood, velvet upholstery, ornate details
 - Period-appropriate technology (no modern electronics)
 
-Make it look like a genuine 1920s photograph while keeping the same subjects and composition.''',
+Make it look like a genuine 1920s photograph while keeping the same people with their exact faces.''',
   ),
   Era(
     position: 1,
@@ -55,7 +57,9 @@ Make it look like a genuine 1920s photograph while keeping the same subjects and
 
 CRITICAL RULES:
 - DO NOT add any people, objects, or elements that are not in the original photo
-- Only transform what already exists in the image
+- PRESERVE exact faces, facial features, and identity of all people and animals
+- DO NOT alter facial structure, skin tone, age, or body type
+- Only change hairstyles, clothing, and surroundings - never the actual face
 - Preserve the exact composition and subjects
 
 PHOTOGRAPHY STYLE:
@@ -72,7 +76,7 @@ IF OBJECTS/ROOMS ARE PRESENT - transform to 1950s style:
 - Pastel colors (mint, pink, turquoise)
 - Period-appropriate technology (small B&W TV with rabbit ears, no modern electronics)
 
-Make it look like a genuine 1950s color photograph while keeping the same subjects and composition.''',
+Make it look like a genuine 1950s color photograph while keeping the same people with their exact faces.''',
   ),
   Era(
     position: 2,
@@ -84,7 +88,9 @@ Make it look like a genuine 1950s color photograph while keeping the same subjec
 
 CRITICAL RULES:
 - DO NOT add any people, objects, or elements that are not in the original photo
-- Only transform what already exists in the image
+- PRESERVE exact faces, facial features, and identity of all people and animals
+- DO NOT alter facial structure, skin tone, age, or body type
+- Only change hairstyles, clothing, and surroundings - never the actual face
 - Preserve the exact composition and subjects
 
 PHOTOGRAPHY STYLE:
@@ -101,7 +107,7 @@ IF OBJECTS/ROOMS ARE PRESENT - transform to 1970s style:
 - Harvest gold, avocado green, burnt orange colors
 - Period-appropriate technology (wood-cabinet TV console, no modern electronics)
 
-Make it look like a genuine 1970s photograph while keeping the same subjects and composition.''',
+Make it look like a genuine 1970s photograph while keeping the same people with their exact faces.''',
   ),
   Era(
     position: 3,
@@ -113,7 +119,9 @@ Make it look like a genuine 1970s photograph while keeping the same subjects and
 
 CRITICAL RULES:
 - DO NOT add any people, objects, or elements that are not in the original photo
-- Only transform what already exists in the image
+- PRESERVE exact faces, facial features, and identity of all people and animals
+- DO NOT alter facial structure, skin tone, age, or body type
+- Only change hairstyles, clothing, and surroundings - never the actual face
 - Preserve the exact composition and subjects
 
 PHOTOGRAPHY STYLE:
@@ -131,7 +139,7 @@ IF OBJECTS/ROOMS ARE PRESENT - transform to 1980s style:
 - Neon lighting effects
 - Period-appropriate technology (boxy TV with VCR, no modern electronics)
 
-Make it look like a stylized 1980s photograph while keeping the same subjects and composition.''',
+Make it look like a stylized 1980s photograph while keeping the same people with their exact faces.''',
   ),
   Era(
     position: 4,
@@ -143,7 +151,9 @@ Make it look like a stylized 1980s photograph while keeping the same subjects an
 
 CRITICAL RULES:
 - DO NOT add any people, objects, or elements that are not in the original photo
-- Only transform what already exists in the image
+- PRESERVE exact faces, facial features, and identity of all people and animals
+- DO NOT alter facial structure, skin tone, age, or body type
+- Only change hairstyles, clothing, and surroundings - never the actual face
 - Preserve the exact composition and subjects
 
 PHOTOGRAPHY STYLE:
@@ -160,7 +170,7 @@ IF OBJECTS/ROOMS ARE PRESENT - transform to early 2000s style:
 - Beige/silver/blue color palette
 - Period-appropriate technology (rear-projection TV, DVD player, early 2000s electronics)
 
-Make it look like an early 2000s digital photograph while keeping the same subjects and composition.''',
+Make it look like an early 2000s digital photograph while keeping the same people with their exact faces.''',
   ),
   Era(
     position: 5,
@@ -172,7 +182,9 @@ Make it look like an early 2000s digital photograph while keeping the same subje
 
 CRITICAL RULES:
 - DO NOT add any people, objects, or elements that are not in the original photo
-- Only enhance what already exists in the image
+- PRESERVE exact faces, facial features, and identity of all people and animals
+- DO NOT alter facial structure, skin tone, age, or body type
+- Only enhance styling and surroundings - never the actual face
 - Preserve the exact composition and subjects
 
 PHOTOGRAPHY STYLE:
@@ -190,6 +202,6 @@ IF OBJECTS/ROOMS ARE PRESENT - enhance with modern style:
 - Neutral colors with warm wood accents
 - Contemporary design elements
 
-Make it look like a high-quality contemporary photograph while keeping the same subjects and composition.''',
+Make it look like a high-quality contemporary photograph while keeping the same people with their exact faces.''',
   ),
 ];
