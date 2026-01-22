@@ -1,87 +1,24 @@
-import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:gal/gal.dart';
-import 'package:path_provider/path_provider.dart';
-import '../models/era.dart';
-import '../services/auth_service.dart';
+import '../models/history_entry.dart';
 import '../services/history_service.dart';
 import '../theme/app_theme.dart';
 
-class ResultScreen extends StatefulWidget {
-  final Uint8List originalBytes;
-  final Uint8List transformedBytes;
-  final Era era;
+class HistoryDetailScreen extends StatefulWidget {
+  final HistoryEntry entry;
 
-  const ResultScreen({
-    super.key,
-    required this.originalBytes,
-    required this.transformedBytes,
-    required this.era,
-  });
+  const HistoryDetailScreen({super.key, required this.entry});
 
   @override
-  State<ResultScreen> createState() => _ResultScreenState();
+  State<HistoryDetailScreen> createState() => _HistoryDetailScreenState();
 }
 
-class _ResultScreenState extends State<ResultScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _fadeAnimation;
+class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
   bool _isSaving = false;
   bool _isSharing = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.elasticOut,
-      ),
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
-      ),
-    );
-
-    _animationController.forward();
-
-    // Auto-save to history
-    _saveToHistory();
-  }
-
-  Future<void> _saveToHistory() async {
-    final authService = Provider.of<AuthService>(context, listen: false);
-    final historyService = Provider.of<HistoryService>(context, listen: false);
-    final userId = authService.currentUser?.uid;
-
-    if (userId != null) {
-      await historyService.saveToHistory(
-        userId: userId,
-        eraName: widget.era.name,
-        eraYear: widget.era.year,
-        imageBytes: widget.transformedBytes,
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
 
   Future<void> _saveToGallery() async {
     if (_isSaving) return;
@@ -89,14 +26,7 @@ class _ResultScreenState extends State<ResultScreen>
     setState(() => _isSaving = true);
 
     try {
-      // Save to temporary file first
-      final tempDir = await getTemporaryDirectory();
-      final fileName = 'timelens_${widget.era.name.toLowerCase().replaceAll(' ', '_')}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final file = File('${tempDir.path}/$fileName');
-      await file.writeAsBytes(widget.transformedBytes);
-
-      // Save to gallery
-      await Gal.putImage(file.path);
+      await Gal.putImage(widget.entry.imagePath);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -136,16 +66,9 @@ class _ResultScreenState extends State<ResultScreen>
     setState(() => _isSharing = true);
 
     try {
-      // Save to temporary file
-      final tempDir = await getTemporaryDirectory();
-      final fileName = 'timelens_${widget.era.name.toLowerCase().replaceAll(' ', '_')}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final file = File('${tempDir.path}/$fileName');
-      await file.writeAsBytes(widget.transformedBytes);
-
-      // Share
       await Share.shareXFiles(
-        [XFile(file.path)],
-        text: 'Check out my ${widget.era.name} (${widget.era.year}) photo made with TimeLens!',
+        [XFile(widget.entry.imagePath)],
+        text: 'Check out my ${widget.entry.eraName} (${widget.entry.eraYear}) photo made with TimeLens!',
       );
     } catch (e) {
       if (mounted) {
@@ -164,86 +87,85 @@ class _ResultScreenState extends State<ResultScreen>
     }
   }
 
+  Future<void> _delete() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Delete Photo?'),
+        content: const Text('This will remove the photo from your history.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      final historyService = Provider.of<HistoryService>(context, listen: false);
+      await historyService.deleteEntry(widget.entry.id);
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final file = File(widget.entry.imagePath);
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundLight,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
-          icon: const Icon(Icons.close_rounded),
-        ),
         title: Text(
-          '${widget.era.name} (${widget.era.year})',
+          '${widget.entry.eraName} (${widget.entry.eraYear})',
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
+        actions: [
+          IconButton(
+            onPressed: _delete,
+            icon: const Icon(Icons.delete_outline_rounded),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              // Transformed Image
+              // Image
               Expanded(
-                child: FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: ScaleTransition(
-                    scale: _scaleAnimation,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                            blurRadius: 30,
-                            offset: const Offset(0, 15),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: Image.memory(
-                          widget.transformedBytes,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Success message
-              FadeTransition(
-                opacity: _fadeAnimation,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
-                  ),
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.green.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.auto_awesome,
-                        color: Colors.green,
-                        size: 20,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Time travel complete!',
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                        blurRadius: 30,
+                        offset: const Offset(0, 15),
                       ),
                     ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: file.existsSync()
+                        ? Image.file(
+                            file,
+                            fit: BoxFit.contain,
+                          )
+                        : const Center(
+                            child: Icon(
+                              Icons.broken_image_rounded,
+                              size: 64,
+                              color: AppTheme.textSecondary,
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -334,24 +256,6 @@ class _ResultScreenState extends State<ResultScreen>
                     ),
                   ),
                 ],
-              ),
-
-              const SizedBox(height: 16),
-
-              // Take Another Button
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: () =>
-                      Navigator.popUntil(context, (route) => route.isFirst),
-                  child: const Text(
-                    'Take Another Photo',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppTheme.textSecondary,
-                    ),
-                  ),
-                ),
               ),
             ],
           ),

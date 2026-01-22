@@ -6,6 +6,7 @@ import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import 'sign_in_screen.dart';
 import 'processing_screen.dart';
+import 'history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -122,6 +123,16 @@ class _HomeScreenState extends State<HomeScreen>
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HistoryScreen()),
+              );
+            },
+            icon: const Icon(Icons.history_rounded),
+            tooltip: 'History',
+          ),
           IconButton(
             onPressed: _signOut,
             icon: const Icon(Icons.logout_rounded),
