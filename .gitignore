@@ -4,6 +4,11 @@ CLAUDE.local.md
 # Firebase config (contains API keys) - use google-services.json.template
 android/app/google-services.json
 
+# Release signing (keep these secret!)
+android/key.properties
+android/*.jks
+android/*.keystore
+
 # Miscellaneous
 *.class
 *.log

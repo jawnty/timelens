@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../models/era.dart';
 import '../services/auth_service.dart';
 import '../services/theme_service.dart';
@@ -25,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _animationController;
   late Animation<double> _thumbnailAnimation;
   final ImagePicker _picker = ImagePicker();
+  String _appVersion = '';
 
   @override
   void initState() {
@@ -38,9 +40,10 @@ class _HomeScreenState extends State<HomeScreen>
     );
     _animationController.forward();
 
-    // Load user credits
+    // Load user credits and app version
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadCredits();
+      _loadAppVersion();
     });
   }
 
@@ -51,6 +54,15 @@ class _HomeScreenState extends State<HomeScreen>
 
     if (user != null) {
       await creditsService.loadCredits(user.uid, user.email);
+    }
+  }
+
+  Future<void> _loadAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    if (mounted) {
+      setState(() {
+        _appVersion = packageInfo.version;
+      });
     }
   }
 
@@ -241,6 +253,26 @@ class _HomeScreenState extends State<HomeScreen>
             ],
           ),
         ),
+        const PopupMenuDivider(),
+        PopupMenuItem<String>(
+          enabled: false,
+          child: Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                size: 20,
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Version $_appVersion',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                ),
+              ),
+            ],
+          ),
+        ),
         const PopupMenuItem<String>(
           value: 'logout',
           child: Row(
@@ -283,9 +315,13 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        centerTitle: false,
         title: const Text(
           'TimeLens',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+          ),
         ),
         actions: [
           const CreditsDisplay(),

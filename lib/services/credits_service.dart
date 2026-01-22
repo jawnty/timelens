@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/user_credits.dart';
-import '../config/allowlist.dart';
+import 'allowlist_service.dart';
 
 class CreditsService extends ChangeNotifier {
   static const String _boxName = 'credits';
+
+  final AllowlistService _allowlistService;
 
   Box? _box;
   UserCredits? _currentCredits;
@@ -14,14 +16,15 @@ class CreditsService extends ChangeNotifier {
   bool get isAllowlistedUser => _currentUserId != null && isAllowlisted(_currentEmail);
   String? _currentEmail;
 
+  CreditsService(this._allowlistService);
+
   Future<void> init() async {
     _box = await Hive.openBox(_boxName);
   }
 
   /// Check if an email is on the allowlist for unlimited access
   bool isAllowlisted(String? email) {
-    if (email == null) return false;
-    return allowlistedEmails.contains(email.toLowerCase());
+    return _allowlistService.isAllowlisted(email);
   }
 
   /// Load credits for a user, creating new record if needed

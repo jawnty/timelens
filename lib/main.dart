@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'services/auth_service.dart';
 import 'services/history_service.dart';
 import 'services/theme_service.dart';
+import 'services/allowlist_service.dart';
 import 'services/credits_service.dart';
 import 'services/purchase_service.dart';
 import 'theme/app_theme.dart';
@@ -21,7 +22,10 @@ void main() async {
   final themeService = ThemeService();
   await themeService.init();
 
-  final creditsService = CreditsService();
+  final allowlistService = AllowlistService();
+  await allowlistService.loadAllowlist();
+
+  final creditsService = CreditsService(allowlistService);
   await creditsService.init();
 
   final purchaseService = PurchaseService(creditsService);
