@@ -41,13 +41,11 @@ class CreditsService extends ChangeNotifier {
 
   /// Check if user can perform a transformation
   bool canTransform() {
-    if (isAllowlisted(_currentEmail)) return true;
     return _currentCredits?.canTransform ?? false;
   }
 
   /// Get display text for credits badge
   String getCreditsDisplayText() {
-    if (isAllowlisted(_currentEmail)) return '∞';
     if (_currentCredits == null) return '...';
 
     final credits = _currentCredits!;
@@ -60,7 +58,6 @@ class CreditsService extends ChangeNotifier {
   /// Use one credit (call after successful transformation)
   /// Returns true if credit was successfully used
   Future<bool> useCredit() async {
-    if (isAllowlisted(_currentEmail)) return true;
     if (_currentCredits == null) return false;
 
     final credits = _currentCredits!;
