@@ -19,14 +19,26 @@ class Era {
     required this.objectsRoomsStyle,
   });
 
-  String get prompt => '''Transform this photo into ${year == 'Today' ? 'a modern "Now" contemporary style' : 'an authentic $year "$name" era image'}.
+  String get prompt => '''Using the provided photograph, transform it into ${year == 'Today' ? 'a modern "Now" contemporary style' : 'an authentic $year "$name" era image'}.
 
-CRITICAL RULES:
-- DO NOT add any people, objects, or elements that are not in the original photo
-- PRESERVE exact faces, facial features, and identity of all people and animals
-- DO NOT alter facial structure, skin tone, age, or body type
-- Only change hairstyles, clothing, and surroundings - never the actual face
-- Preserve the exact composition and subjects
+CRITICAL - PRESERVE IDENTITY COMPLETELY:
+- Maintain the EXACT facial structure, bone structure, and all facial proportions of every person
+- Keep all unique facial features: eye shape, nose shape, lip shape, jawline, cheekbones
+- Preserve skin tone, skin texture, and any unique markings (moles, freckles, scars)
+- Do NOT alter age, weight, or body type
+- The person must be clearly recognizable as the same individual
+
+WHAT YOU MAY CHANGE:
+- Hairstyle (adapt to $year era style)
+- Clothing (adapt to $year era fashion)
+- Background and surroundings
+- Lighting and color grading to match the era
+
+WHAT YOU MUST NOT CHANGE:
+- Any facial features or facial structure
+- The person's identity or likeness
+- Body proportions
+- Objects or people not in the original (do not add anything)
 
 PHOTOGRAPHY STYLE:
 $photographyStyle
@@ -37,7 +49,7 @@ $peopleAppearance
 IF OBJECTS/ROOMS ARE PRESENT - transform to $year style:
 $objectsRoomsStyle
 
-Make it look like a ${year == 'Today' ? 'high-quality contemporary' : 'genuine $year'} photograph while keeping the same people with their exact faces.''';
+The final image must look like a ${year == 'Today' ? 'high-quality contemporary' : 'genuine $year'} photograph where the same person has simply been styled differently - their face and identity must be unmistakably preserved.''';
 }
 
 const List<Era> eras = [

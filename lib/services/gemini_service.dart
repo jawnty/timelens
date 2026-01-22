@@ -36,6 +36,9 @@ class GeminiService {
         ],
         'generationConfig': {
           'responseModalities': ['image', 'text'],
+          'imageConfig': {
+            'imageSize': '2K',
+          },
         }
       };
 
