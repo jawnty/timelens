@@ -83,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen>
       final XFile? photo = await _picker.pickImage(
         source: ImageSource.camera,
         preferredCameraDevice: CameraDevice.rear,
-        imageQuality: 85,
       );
 
       if (photo != null && mounted) {
@@ -120,7 +119,6 @@ class _HomeScreenState extends State<HomeScreen>
     try {
       final XFile? photo = await _picker.pickImage(
         source: ImageSource.gallery,
-        imageQuality: 85,
       );
 
       if (photo != null && mounted) {

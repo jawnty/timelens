@@ -9,12 +9,38 @@ class GeminiService {
   static const String _model = 'gemini-3-pro-image-preview';
   static const String _baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models';
 
+  String _detectMimeType(Uint8List bytes) {
+    if (bytes.length >= 3 &&
+        bytes[0] == 0xFF &&
+        bytes[1] == 0xD8 &&
+        bytes[2] == 0xFF) {
+      return 'image/jpeg';
+    }
+    if (bytes.length >= 4 &&
+        bytes[0] == 0x89 &&
+        bytes[1] == 0x50 &&
+        bytes[2] == 0x4E &&
+        bytes[3] == 0x47) {
+      return 'image/png';
+    }
+    if (bytes.length >= 4 &&
+        bytes[0] == 0x52 &&
+        bytes[1] == 0x49 &&
+        bytes[2] == 0x46 &&
+        bytes[3] == 0x46) {
+      return 'image/webp';
+    }
+    // Default to JPEG if unknown
+    return 'image/jpeg';
+  }
+
   Future<Uint8List?> transformImage({
     required Uint8List imageBytes,
     required String prompt,
   }) async {
     try {
       final base64Image = base64Encode(imageBytes);
+      final mimeType = _detectMimeType(imageBytes);
 
       final url = Uri.parse('$_baseUrl/$_model:generateContent?key=$_apiKey');
 
@@ -24,7 +50,7 @@ class GeminiService {
             'parts': [
               {
                 'inline_data': {
-                  'mime_type': 'image/jpeg',
+                  'mime_type': mimeType,
                   'data': base64Image,
                 }
               },
@@ -36,6 +62,9 @@ class GeminiService {
         ],
         'generationConfig': {
           'responseModalities': ['image', 'text'],
+          'imageConfig': {
+            'imageSize': '2K',
+          },
         }
       };
 

@@ -5,8 +5,9 @@ class Era {
   final String description;
   final String thumbnailPath;
   final String photographyStyle;
-  final String peopleAppearance;
-  final String objectsRoomsStyle;
+  final String clothingTransform;
+  final String hairTransform;
+  final String environmentTransform;
 
   const Era({
     required this.position,
@@ -15,26 +16,31 @@ class Era {
     required this.description,
     required this.thumbnailPath,
     required this.photographyStyle,
-    required this.peopleAppearance,
-    required this.objectsRoomsStyle,
+    required this.clothingTransform,
+    required this.hairTransform,
+    required this.environmentTransform,
   });
 
-  String get prompt => '''[TASK]: Transform the attached image into an authentic photograph from ${year == 'Today' ? 'the present day' : year} ($name era).
+  String get prompt => '''### ROLE
+Act as a Precision Historical Image Editor. Your goal is to perform a semantic "restyling" of the provided image while maintaining 100% facial identity.
 
-[CONSTRAINTS]:
-- Keep the subject's facial features, bone structure, skin tone, eye color, and body type exactly the same as the source image.
-- Maintain the original pose, silhouette, and camera angle.
-- Only modify the semantic layers: clothing, hair, objects, and background.
-- Replace modern objects (smartphones, laptops, modern cars, contemporary furniture) with $year-appropriate equivalents.
+### PHASE 1: VISUAL ANALYSIS & ANCHORING
+1. Identify all human and animal faces in the source image.
+2. These faces are your "Static Anchors."
+3. You MUST lock the geometry, features, skin tone, and textures of these Anchors. They cannot be modified.
 
-[TRANSFORMATION]:
-- Restyle hair to $year fashion: $peopleAppearance
-- Swap modern technology, furniture, and decor with period-appropriate items: $objectsRoomsStyle
+### PHASE 2: ${year == 'Today' ? 'MODERN "NOW"' : '$year "$name"'} TRANSFORMATION
+While keeping the Static Anchors completely untouched, transform all "Variable Elements" to ${year == 'Today' ? 'a contemporary modern style' : 'the $year era'}:
+- CLOTHING: $clothingTransform
+- HAIR: $hairTransform (style only - do not change hairline or face shape)
+- ENVIRONMENT: $environmentTransform
 
-[VISUAL STYLE]: Apply the photographic aesthetic of ${year == 'Today' ? 'modern professional photography' : year}, specifically: $photographyStyle
-Use authentic lighting and period-appropriate film characteristics. The image should look like it was captured on original ${year == 'Today' ? 'contemporary' : year} camera equipment.
+### PHASE 3: PHOTOGRAPHIC AESTHETIC
+Render the final output using ${year == 'Today' ? 'a "Modern Digital Photography" engine' : 'a "$year Analog Film" engine'}:
+$photographyStyle
 
-[OUTPUT]: The result must be an authentic ${year == 'Today' ? 'contemporary' : year} photograph where the subjects are immediately recognizable as the same people - not a costume photo, not a digital collage, not different people styled to look similar.''';
+### MANDATE
+The subjects must be instantly recognizable as the exact same people from the source image. This is a restyling of existing subjects, not a replacement. Any deviation from the original facial features is a failure.''';
 }
 
 const List<Era> eras = [
@@ -44,9 +50,12 @@ const List<Era> eras = [
     name: 'Silver Screen',
     description: 'Black & white, film grain, vintage portraits',
     thumbnailPath: 'assets/images/eras/1_silver_screen.png',
-    photographyStyle: '''Black and white orthochromatic film with high contrast and silver halide grain. Soft, diffused lighting reminiscent of early Hollywood portrait photography. Slight vignetting at edges.''',
-    peopleAppearance: '''Slicked back hair with pomade for men/boys, finger waves or bob cuts for women/girls. Three-piece suits with wide lapels for males, drop-waist flapper dresses with beading for females.''',
-    objectsRoomsStyle: '''Art Deco aesthetic with geometric patterns. Dark wood furniture, velvet upholstery, ornate gilded details. Gramophones, candlestick telephones, Art Deco lamps.''',
+    photographyStyle: '''- Convert to black and white orthochromatic film with high contrast and silver halide grain.
+- Apply soft, diffused lighting reminiscent of early Hollywood portraits.
+- Add slight vignetting at edges for authentic period look.''',
+    clothingTransform: 'Replace modern fabrics with period-accurate 1920s attire: three-piece suits with wide lapels for males, drop-waist flapper dresses with fringe or beading for females.',
+    hairTransform: 'Style into slicked-back looks with pomade for men/boys, finger waves or sleek bob cuts for women/girls.',
+    environmentTransform: 'Replace modern decor with Art Deco aesthetic featuring geometric patterns, dark wood furniture, velvet upholstery, gramophones, candlestick telephones, and ornate gilded details. Remove any modern electronics.',
   ),
   Era(
     position: 1,
@@ -54,9 +63,12 @@ const List<Era> eras = [
     name: 'Atomic',
     description: 'Technicolor, warm retro, Americana vibes',
     thumbnailPath: 'assets/images/eras/2_atomic.png',
-    photographyStyle: '''Kodachrome film with warm, saturated reds and teals. Bright, optimistic lighting with soft shadows. Clean, crisp mid-century photography aesthetic with slight color bloom.''',
-    peopleAppearance: '''Short neat cuts with side parts for men, victory rolls or pin curls for women. Cardigans, polo shirts, letterman jackets for males. Full circle skirts, Peter Pan collars, saddle shoes for females.''',
-    objectsRoomsStyle: '''Mid-century modern furniture with clean lines and tapered legs. Pastel colors (mint, pink, turquoise). Chrome appliances, small black-and-white TV with rabbit ears, rotary phones, diner-style furniture.''',
+    photographyStyle: '''- Apply warm, saturated Kodachrome color processing with rich reds and teals.
+- Use bright, optimistic lighting with soft shadows.
+- Render with clean, crisp mid-century photography aesthetic.''',
+    clothingTransform: 'Replace modern fabrics with period-accurate 1950s attire: cardigans, polo shirts, letterman jackets for males; full circle skirts, Peter Pan collars, saddle shoes for females.',
+    hairTransform: 'Style into short neat cuts with side parts for men, victory rolls or pin curls for women.',
+    environmentTransform: 'Replace modern decor with mid-century modern furniture (clean lines, tapered legs), pastel colors (mint, pink, turquoise), chrome appliances, small B&W TV with rabbit ears, rotary phones. Remove modern electronics.',
   ),
   Era(
     position: 2,
@@ -64,9 +76,12 @@ const List<Era> eras = [
     name: 'Groovy',
     description: 'Faded warm tones, earthy colors, soft grain',
     thumbnailPath: 'assets/images/eras/3_groovy.png',
-    photographyStyle: '''Faded Polaroid or Ektachrome aesthetic with warm color cast and muted saturation. Soft film grain, slightly hazy with light leaks. Earthy tones: oranges, browns, olive greens, harvest gold.''',
-    peopleAppearance: '''Longer shaggy hair with sideburns for men, feathered Farrah Fawcett hair for women. Earth-tone clothing, wide collars, bell-bottom pants, polyester leisure suits, peasant blouses.''',
-    objectsRoomsStyle: '''Shag carpet in orange or brown, wood paneling on walls. Harvest gold, avocado green, burnt orange color palette. Wood-cabinet console TV, lava lamps, macramé wall hangings, beanbag chairs.''',
+    photographyStyle: '''- Apply faded Polaroid or Ektachrome aesthetic with warm color cast.
+- Use soft film grain, slightly hazy with subtle light leaks.
+- Shift palette to earthy tones: oranges, browns, olive greens, harvest gold.''',
+    clothingTransform: 'Replace modern fabrics with earth-toned polyester, wide-pointed collars, bell-bottom pants, leisure suits, peasant blouses.',
+    hairTransform: 'Style into longer shaggy hair with sideburns for men, feathered Farrah Fawcett styles for women.',
+    environmentTransform: 'Replace modern decor with shag carpet (orange/brown), wood paneling, harvest gold and avocado green palette, wood-cabinet console TV, lava lamps, macramé wall hangings.',
   ),
   Era(
     position: 3,
@@ -74,9 +89,12 @@ const List<Era> eras = [
     name: 'Neon Dreams',
     description: 'Neon, synthwave, bold saturated colors',
     thumbnailPath: 'assets/images/eras/4_neon_dreams.png',
-    photographyStyle: '''35mm film with vibrant colors and neon accent lighting (pink, cyan, purple glow). High contrast with punchy saturation. Hard flash photography aesthetic common in 80s snapshots.''',
-    peopleAppearance: '''Big voluminous hair with lots of hairspray, permed styles, mullets. Bold neon colors, shoulder pads, Members Only jackets, leg warmers, geometric patterns, acid-wash denim.''',
-    objectsRoomsStyle: '''Memphis design with bold geometric patterns. Glass block walls, brass and chrome accents, neon signs. Boxy CRT television with VCR, boomboxes, early personal computers, Rubik's cubes.''',
+    photographyStyle: '''- Apply 35mm film aesthetic with vibrant colors and neon accent lighting (pink, cyan, purple glow).
+- Use high contrast with punchy saturation.
+- Add hard flash photography look common in 80s snapshots. Keep it realistic, not illustrated.''',
+    clothingTransform: 'Replace modern fabrics with bold 1980s attire: shoulder pads, Members Only jackets, neon accents, geometric patterns, leg warmers, acid-wash denim.',
+    hairTransform: 'Style into big voluminous hair with lots of volume, permed styles, or mullets.',
+    environmentTransform: 'Replace modern decor with Memphis design patterns, glass block walls, brass and chrome accents, neon signs, boxy CRT TV with VCR, boomboxes.',
   ),
   Era(
     position: 4,
@@ -84,9 +102,12 @@ const List<Era> eras = [
     name: 'Y2K',
     description: 'Glossy, early digital, metallic/futuristic',
     thumbnailPath: 'assets/images/eras/5_y2k.png',
-    photographyStyle: '''Early digital camera or 35mm point-and-shoot aesthetic. Cool, slightly overexposed with metallic silvery-blue color cast. Slight softness and digital noise characteristic of early 2000s photography.''',
-    peopleAppearance: '''Frosted tips, chunky highlights, spiky gelled hair for men. Straightened hair with side bangs for women. Low-rise bootcut jeans, cargo pants, graphic tees, velour tracksuits, trucker hats.''',
-    objectsRoomsStyle: '''Silver and chrome accents, minimalist Y2K aesthetic. Beige, silver, and blue color palette. Rear-projection big-screen TV, DVD players, early flip phones, iPod Classic, transparent plastic electronics.''',
+    photographyStyle: '''- Apply early digital camera or 35mm point-and-shoot aesthetic.
+- Use cool, slightly overexposed look with metallic silvery-blue color cast.
+- Add slight softness and digital noise characteristic of early 2000s.''',
+    clothingTransform: 'Replace modern fabrics with Y2K fashion: low-rise bootcut jeans, cargo pants, graphic tees, velour tracksuits, trucker hats, metallic accents.',
+    hairTransform: 'Style into frosted tips, chunky highlights, or spiky gelled hair for men; straightened hair with side bangs for women.',
+    environmentTransform: 'Replace modern decor with silver/chrome accents, minimalist Y2K aesthetic, beige/silver/blue palette, rear-projection TV, DVD players, early flip phones, transparent plastic electronics.',
   ),
   Era(
     position: 5,
@@ -94,8 +115,11 @@ const List<Era> eras = [
     name: 'Now',
     description: 'Clean, natural, modern photography',
     thumbnailPath: 'assets/images/eras/6_now.png',
-    photographyStyle: '''Modern mirrorless camera aesthetic with clean, natural colors and subtle enhancement. High resolution with shallow depth of field and pleasing bokeh. Soft, flattering natural lighting typical of professional lifestyle photography.''',
-    peopleAppearance: '''Current contemporary casual clothing and modern hairstyles. Natural, relaxed styling with clean lines.''',
-    objectsRoomsStyle: '''Clean minimalist aesthetic with neutral colors and warm wood accents. Contemporary furniture, smart TVs, modern smartphones and laptops, indoor plants, Scandinavian-inspired design.''',
+    photographyStyle: '''- Apply modern mirrorless camera aesthetic with clean, natural colors.
+- Use high resolution with shallow depth of field and pleasing bokeh.
+- Add soft, flattering natural lighting typical of professional lifestyle photography.''',
+    clothingTransform: 'Update to current contemporary casual clothing with modern cuts and current fashion trends.',
+    hairTransform: 'Style into current modern hairstyles with natural, relaxed styling.',
+    environmentTransform: 'Update to contemporary decor with clean lines, minimalist aesthetic, neutral colors with warm wood accents, modern furniture, indoor plants, Scandinavian-inspired design.',
   ),
 ];
