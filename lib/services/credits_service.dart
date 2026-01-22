@@ -49,10 +49,14 @@ class CreditsService extends ChangeNotifier {
     if (_currentCredits == null) return '...';
 
     final credits = _currentCredits!;
-    if (credits.hasFreeTransformations) {
+    final total = credits.totalAvailable;
+
+    // Show total available credits
+    if (credits.hasFreeTransformations && credits.balance == 0) {
+      // Only free credits remaining
       return '${credits.freeRemaining} free';
     }
-    return '${credits.balance}';
+    return '$total';
   }
 
   /// Use one credit (call after successful transformation)
