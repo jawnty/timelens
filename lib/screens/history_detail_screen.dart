@@ -120,7 +120,7 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
     final file = File(widget.entry.imagePath);
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           '${widget.entry.eraName} (${widget.entry.eraYear})',
@@ -159,11 +159,11 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                             file,
                             fit: BoxFit.contain,
                           )
-                        : const Center(
+                        : Center(
                             child: Icon(
                               Icons.broken_image_rounded,
                               size: 64,
-                              color: AppTheme.textSecondary,
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                             ),
                           ),
                   ),

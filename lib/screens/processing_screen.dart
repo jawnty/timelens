@@ -147,7 +147,7 @@ class _ProcessingScreenState extends State<ProcessingScreen>
             end: Alignment.bottomCenter,
             colors: [
               AppTheme.primaryColor.withValues(alpha: 0.1),
-              AppTheme.backgroundLight,
+              Theme.of(context).scaffoldBackgroundColor,
             ],
           ),
         ),
@@ -190,7 +190,7 @@ class _ProcessingScreenState extends State<ProcessingScreen>
                         height: 160,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppTheme.backgroundLight,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withValues(alpha: 0.1),
@@ -251,9 +251,9 @@ class _ProcessingScreenState extends State<ProcessingScreen>
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Text(
                     _statusMessage,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
-                      color: AppTheme.textSecondary,
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -265,11 +265,11 @@ class _ProcessingScreenState extends State<ProcessingScreen>
               // Cancel button
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
+                child: Text(
                   'Cancel',
                   style: TextStyle(
                     fontSize: 16,
-                    color: AppTheme.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ),

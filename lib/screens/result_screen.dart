@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import '../models/era.dart';
 import '../services/auth_service.dart';
 import '../services/history_service.dart';
+import '../services/credits_service.dart';
 import '../theme/app_theme.dart';
 
 class ResultScreen extends StatefulWidget {
@@ -65,6 +66,7 @@ class _ResultScreenState extends State<ResultScreen>
   Future<void> _saveToHistory() async {
     final authService = Provider.of<AuthService>(context, listen: false);
     final historyService = Provider.of<HistoryService>(context, listen: false);
+    final creditsService = Provider.of<CreditsService>(context, listen: false);
     final userId = authService.currentUser?.uid;
 
     if (userId != null) {
@@ -74,6 +76,9 @@ class _ResultScreenState extends State<ResultScreen>
         eraYear: widget.era.year,
         imageBytes: widget.transformedBytes,
       );
+
+      // Deduct credit for successful transformation
+      await creditsService.useCredit();
     }
   }
 
@@ -167,7 +172,7 @@ class _ResultScreenState extends State<ResultScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
@@ -344,11 +349,11 @@ class _ResultScreenState extends State<ResultScreen>
                 child: TextButton(
                   onPressed: () =>
                       Navigator.popUntil(context, (route) => route.isFirst),
-                  child: const Text(
+                  child: Text(
                     'Take Another Photo',
                     style: TextStyle(
                       fontSize: 16,
-                      color: AppTheme.textSecondary,
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                 ),

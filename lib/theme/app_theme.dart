@@ -127,4 +127,110 @@ class AppTheme {
       ),
     );
   }
+
+  static ThemeData get darkTheme {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      primaryColor: primaryColor,
+      scaffoldBackgroundColor: backgroundDark,
+      colorScheme: const ColorScheme.dark(
+        primary: primaryColor,
+        secondary: accentPink,
+        surface: surfaceDark,
+        onPrimary: textLight,
+        onSecondary: textLight,
+        onSurface: textLight,
+      ),
+      fontFamily: 'Roboto',
+      textTheme: const TextTheme(
+        displayLarge: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          color: textLight,
+        ),
+        displayMedium: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+          color: textLight,
+        ),
+        headlineLarge: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: textLight,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: textLight,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: textLight,
+        ),
+        bodyLarge: TextStyle(
+          fontSize: 16,
+          color: textLight,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 14,
+          color: textLight,
+        ),
+        labelLarge: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: textLight,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          foregroundColor: textLight,
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 2,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: primaryLight,
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          side: const BorderSide(color: primaryLight, width: 2),
+        ),
+      ),
+      cardTheme: CardThemeData(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        color: surfaceDark,
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: textLight),
+        titleTextStyle: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: textLight,
+        ),
+      ),
+      sliderTheme: SliderThemeData(
+        activeTrackColor: primaryColor,
+        inactiveTrackColor: primaryColor.withValues(alpha: 0.3),
+        thumbColor: primaryColor,
+        overlayColor: primaryColor.withValues(alpha: 0.2),
+        trackHeight: 8,
+        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 14),
+        overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
+      ),
+    );
+  }
 }

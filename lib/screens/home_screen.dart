@@ -3,7 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/era.dart';
 import '../services/auth_service.dart';
+import '../services/theme_service.dart';
+import '../services/credits_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/credits_display.dart';
+import '../widgets/no_credits_dialog.dart';
 import 'sign_in_screen.dart';
 import 'processing_screen.dart';
 import 'history_screen.dart';
@@ -33,6 +37,21 @@ class _HomeScreenState extends State<HomeScreen>
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
     _animationController.forward();
+
+    // Load user credits
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadCredits();
+    });
+  }
+
+  Future<void> _loadCredits() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final creditsService = Provider.of<CreditsService>(context, listen: false);
+    final user = authService.currentUser;
+
+    if (user != null) {
+      await creditsService.loadCredits(user.uid, user.email);
+    }
   }
 
   @override
@@ -53,6 +72,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Future<void> _takePhoto() async {
+    // Check if user has credits
+    final creditsService = Provider.of<CreditsService>(context, listen: false);
+    if (!creditsService.canTransform()) {
+      await NoCreditsDialog.show(context);
+      return;
+    }
+
     try {
       final XFile? photo = await _picker.pickImage(
         source: ImageSource.camera,
@@ -111,18 +137,123 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
+  String _getInitials(String? displayName, String? email) {
+    if (displayName != null && displayName.isNotEmpty) {
+      final parts = displayName.trim().split(' ');
+      if (parts.length >= 2) {
+        return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
+      }
+      return displayName[0].toUpperCase();
+    }
+    if (email != null && email.isNotEmpty) {
+      return email[0].toUpperCase();
+    }
+    return '?';
+  }
+
+  Widget _buildProfileButton() {
+    final authService = Provider.of<AuthService>(context);
+    final themeService = Provider.of<ThemeService>(context);
+    final user = authService.currentUser;
+    final photoUrl = user?.photoURL;
+    final initials = _getInitials(user?.displayName, user?.email);
+
+    return PopupMenuButton<String>(
+      offset: const Offset(0, 50),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      onSelected: (value) {
+        if (value == 'logout') {
+          _signOut();
+        } else if (value == 'theme') {
+          themeService.toggleTheme();
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem<String>(
+          enabled: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user?.displayName ?? 'User',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              if (user?.email != null)
+                Text(
+                  user!.email!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const PopupMenuDivider(),
+        PopupMenuItem<String>(
+          value: 'theme',
+          child: Row(
+            children: [
+              Icon(
+                themeService.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Text(themeService.isDarkMode ? 'Light Mode' : 'Dark Mode'),
+            ],
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'logout',
+          child: Row(
+            children: [
+              Icon(Icons.logout_rounded, size: 20),
+              SizedBox(width: 12),
+              Text('Sign Out'),
+            ],
+          ),
+        ),
+      ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: photoUrl != null
+            ? CircleAvatar(
+                radius: 18,
+                backgroundImage: NetworkImage(photoUrl),
+                backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.2),
+              )
+            : CircleAvatar(
+                radius: 18,
+                backgroundColor: AppTheme.primaryColor,
+                child: Text(
+                  initials,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedEra = eras[_selectedEraIndex];
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text(
           'TimeLens',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
+          const CreditsDisplay(),
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -133,11 +264,7 @@ class _HomeScreenState extends State<HomeScreen>
             icon: const Icon(Icons.history_rounded),
             tooltip: 'History',
           ),
-          IconButton(
-            onPressed: _signOut,
-            icon: const Icon(Icons.logout_rounded),
-            tooltip: 'Sign Out',
-          ),
+          _buildProfileButton(),
         ],
       ),
       body: SafeArea(
@@ -185,18 +312,18 @@ class _HomeScreenState extends State<HomeScreen>
                   children: [
                     Text(
                       selectedEra.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       selectedEra.year,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
-                        color: AppTheme.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -243,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 isSelected ? FontWeight.bold : FontWeight.normal,
                             color: isSelected
                                 ? AppTheme.primaryColor
-                                : AppTheme.textSecondary,
+                                : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                         );
                       }).toList(),

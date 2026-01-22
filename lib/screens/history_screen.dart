@@ -81,7 +81,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text(
           'History',
@@ -96,14 +96,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   Icon(
                     Icons.history_rounded,
                     size: 80,
-                    color: AppTheme.textSecondary.withValues(alpha: 0.5),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
                   ),
                   const SizedBox(height: 16),
                   Text(
                     'No photos yet',
                     style: TextStyle(
                       fontSize: 18,
-                      color: AppTheme.textSecondary.withValues(alpha: 0.7),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -111,7 +111,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     'Your transformed photos will appear here',
                     style: TextStyle(
                       fontSize: 14,
-                      color: AppTheme.textSecondary.withValues(alpha: 0.5),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -190,7 +190,7 @@ class _HistoryCard extends StatelessWidget {
                       fit: BoxFit.cover,
                     )
                   : Container(
-                      color: AppTheme.textSecondary.withValues(alpha: 0.2),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
                       child: const Icon(Icons.broken_image_rounded),
                     ),
 
