@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Your Account - TimeLens</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #1a73e8;
+        }
+        .delete-button {
+            display: inline-block;
+            background-color: #dc3545;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Delete Your TimeLens Account</h1>
+
+    <p>We're sorry to see you go. If you'd like to delete your TimeLens account and all associated data, you can request deletion by clicking the button below.</p>
+
+    <a href="mailto:timelens@jtversity.com?subject=Account%20Deletion%20Request&body=Please%20delete%20my%20TimeLens%20account.%0A%0AMy%20account%20email%3A%20%5BEnter%20the%20email%20you%20used%20to%20sign%20in%5D%0A%0AThank%20you." class="delete-button">Request Account Deletion</a>
+
+    <div class="info-box">
+        <strong>What happens when you request deletion:</strong>
+        <ul>
+            <li>We will verify your identity using the email address associated with your account</li>
+            <li>Your account and all associated data will be permanently deleted within 7 days</li>
+            <li>You will receive a confirmation email once deletion is complete</li>
+        </ul>
+    </div>
+
+    <h2>What data will be deleted?</h2>
+    <p>When you delete your account, the following data will be permanently removed:</p>
+    <ul>
+        <li><strong>Account information:</strong> Your name, email address, and profile picture from Google Sign-In</li>
+        <li><strong>Purchase history:</strong> Records of any in-app purchases (note: you can still restore purchases if you reinstall)</li>
+        <li><strong>App preferences:</strong> Any settings or preferences stored in the app</li>
+    </ul>
+
+    <div class="warning-box">
+        <strong>Important:</strong> Photos you select in the app are processed in real-time and are never stored on our servers. They are sent to Google's Gemini API for transformation and immediately discarded after processing.
+    </div>
+
+    <h2>Alternative: Delete from within the app</h2>
+    <p>You can also sign out of the app at any time by going to <strong>Settings > Sign Out</strong>. This will remove your local session, but to fully delete your account data from our servers, please use the email request above.</p>
+
+    <div class="footer">
+        <p>Questions? Contact us at <a href="mailto:timelens@jtversity.com">timelens@jtversity.com</a></p>
+        <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="https://timelens.app">TimeLens Home</a></p>
+    </div>
+</body>
+</html>
