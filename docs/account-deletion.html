@@ -4,90 +4,218 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Your Account - TimeLens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #1F2937;
+            background: linear-gradient(135deg, #FAFAFA 0%, #F3F4F6 100%);
+            min-height: 100vh;
+        }
+
+        .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
-            color: #333;
+            padding: 40px 20px;
         }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            margin-bottom: 16px;
+        }
+
+        .app-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #6366F1;
+            margin: 0;
+        }
+
         h1 {
-            color: #1a73e8;
+            font-size: 24px;
+            font-weight: 600;
+            color: #1F2937;
+            margin-top: 32px;
+            margin-bottom: 16px;
         }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1F2937;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #6B7280;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
         .delete-button {
             display: inline-block;
-            background-color: #dc3545;
+            background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
             color: white;
-            padding: 12px 24px;
+            padding: 16px 32px;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 16px;
             font-size: 16px;
-            margin: 20px 0;
+            font-weight: 600;
+            margin: 24px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
         }
+
         .delete-button:hover {
-            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
         }
+
         .info-box {
-            background-color: #f8f9fa;
-            border-left: 4px solid #1a73e8;
-            padding: 15px;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            border-radius: 16px;
+            padding: 20px;
             margin: 20px 0;
         }
+
+        .info-box strong {
+            color: #6366F1;
+            font-weight: 600;
+        }
+
         .warning-box {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-radius: 16px;
+            padding: 20px;
             margin: 20px 0;
         }
-        ul {
-            margin: 10px 0;
-            padding-left: 20px;
+
+        .warning-box strong {
+            color: #B45309;
+            font-weight: 600;
         }
+
+        ul {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #6B7280;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        li strong {
+            color: #1F2937;
+            font-weight: 500;
+        }
+
         .footer {
             margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+            padding-top: 24px;
+            border-top: 1px solid #E5E7EB;
+            text-align: center;
             font-size: 14px;
-            color: #666;
+            color: #6B7280;
+        }
+
+        .footer a {
+            color: #6366F1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer p {
+            margin: 8px 0;
+        }
+
+        .divider {
+            color: #D1D5DB;
+            margin: 0 12px;
         }
     </style>
 </head>
 <body>
-    <h1>Delete Your TimeLens Account</h1>
+    <div class="container">
+        <div class="header">
+            <img src="app_icon.png" alt="TimeLens Logo" class="logo">
+            <h1 class="app-name">TimeLens</h1>
+        </div>
 
-    <p>We're sorry to see you go. If you'd like to delete your TimeLens account and all associated data, you can request deletion by clicking the button below.</p>
+        <div class="card">
+            <h1 style="margin-top: 0;">Delete Your Account</h1>
 
-    <a href="mailto:timelens@jtversity.com?subject=Account%20Deletion%20Request&body=Please%20delete%20my%20TimeLens%20account.%0A%0AMy%20account%20email%3A%20%5BEnter%20the%20email%20you%20used%20to%20sign%20in%5D%0A%0AThank%20you." class="delete-button">Request Account Deletion</a>
+            <p>We're sorry to see you go. If you'd like to delete your TimeLens account and all associated data, you can request deletion by clicking the button below.</p>
 
-    <div class="info-box">
-        <strong>What happens when you request deletion:</strong>
-        <ul>
-            <li>We will verify your identity using the email address associated with your account</li>
-            <li>Your account and all associated data will be permanently deleted within 7 days</li>
-            <li>You will receive a confirmation email once deletion is complete</li>
-        </ul>
-    </div>
+            <center>
+                <a href="mailto:timelens@jtversity.com?subject=Account%20Deletion%20Request&body=Please%20delete%20my%20TimeLens%20account.%0A%0AMy%20account%20email%3A%20%5BEnter%20the%20email%20you%20used%20to%20sign%20in%5D%0A%0AThank%20you." class="delete-button">Request Account Deletion</a>
+            </center>
 
-    <h2>What data will be deleted?</h2>
-    <p>When you delete your account, the following data will be permanently removed:</p>
-    <ul>
-        <li><strong>Account information:</strong> Your name, email address, and profile picture from Google Sign-In</li>
-        <li><strong>Purchase history:</strong> Records of any in-app purchases (note: you can still restore purchases if you reinstall)</li>
-        <li><strong>App preferences:</strong> Any settings or preferences stored in the app</li>
-    </ul>
+            <div class="info-box">
+                <strong>What happens when you request deletion:</strong>
+                <ul>
+                    <li>We will verify your identity using the email address associated with your account</li>
+                    <li>Your account and all associated data will be permanently deleted within 7 days</li>
+                    <li>You will receive a confirmation email once deletion is complete</li>
+                </ul>
+            </div>
+        </div>
 
-    <div class="warning-box">
-        <strong>Important:</strong> Photos you select in the app are processed in real-time and are never stored on our servers. They are sent to Google's Gemini API for transformation and immediately discarded after processing.
-    </div>
+        <div class="card">
+            <h2 style="margin-top: 0;">What data will be deleted?</h2>
+            <p>When you delete your account, the following data will be permanently removed:</p>
+            <ul>
+                <li><strong>Account information:</strong> Your name, email address, and profile picture from Google Sign-In</li>
+                <li><strong>Purchase history:</strong> Records of any in-app purchases (note: you can still restore purchases if you reinstall)</li>
+                <li><strong>App preferences:</strong> Any settings or preferences stored in the app</li>
+            </ul>
 
-    <h2>Alternative: Delete from within the app</h2>
-    <p>You can also sign out of the app at any time by going to <strong>Settings > Sign Out</strong>. This will remove your local session, but to fully delete your account data from our servers, please use the email request above.</p>
+            <div class="warning-box">
+                <strong>Important:</strong> Photos you select in the app are processed in real-time and are never stored on our servers. They are sent to Google's Gemini API for transformation and immediately discarded after processing.
+            </div>
+        </div>
 
-    <div class="footer">
-        <p>Questions? Contact us at <a href="mailto:timelens@jtversity.com">timelens@jtversity.com</a></p>
-        <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="https://timelens.app">TimeLens Home</a></p>
+        <div class="card">
+            <h2 style="margin-top: 0;">Alternative: Sign out from the app</h2>
+            <p>You can also sign out of the app at any time by going to <strong>Settings → Sign Out</strong>. This will remove your local session, but to fully delete your account data from our servers, please use the email request above.</p>
+        </div>
+
+        <div class="footer">
+            <p>Questions? Contact us at <a href="mailto:timelens@jtversity.com">timelens@jtversity.com</a></p>
+            <p>
+                <a href="privacy-policy.html">Privacy Policy</a>
+            </p>
+        </div>
     </div>
 </body>
 </html>
