@@ -1,8 +1,9 @@
 # Local Claude Code instructions (contains sensitive info)
 CLAUDE.local.md
 
-# Firebase config (contains API keys) - use google-services.json.template
+# Firebase config (contains API keys) - use templates for setup
 android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
 
 # Release signing (keep these secret!)
 android/key.properties
