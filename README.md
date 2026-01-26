@@ -1,6 +1,6 @@
 # TimeLens
 
-A mobile app that transforms your photos into different historical eras using AI. Take a selfie and see yourself in the 1920s, 1950s, 1970s, 1980s, or Y2K era.
+A mobile app that transforms your photos into different historical eras using AI. Take a selfie and see yourself in the 1920s, 1950s, 1970s, 1980s, or Y2K era. Available on Android and iOS.
 
 <p align="center">
   <img src="docs/app_icon_draft2.png" alt="TimeLens Icon" width="150">
@@ -25,7 +25,9 @@ A mobile app that transforms your photos into different historical eras using AI
 - **Framework**: Flutter/Dart
 - **Authentication**: Firebase Auth with Google Sign-In
 - **AI**: Gemini 3 Pro Image Preview API
-- **Distribution**: Firebase App Distribution
+- **Distribution**:
+  - Android: Google Play Store (closed testing) and Firebase App Distribution
+  - iOS: TestFlight (App Store Connect)
 
 ## Getting Started
 
@@ -35,6 +37,7 @@ A mobile app that transforms your photos into different historical eras using AI
 - Android Studio or VS Code with Flutter extensions
 - A Firebase project with Authentication enabled
 - Gemini API key
+- For iOS: Xcode, Apple Developer account, CocoaPods
 
 ### Setup
 
@@ -52,7 +55,8 @@ A mobile app that transforms your photos into different historical eras using AI
 3. Configure Firebase:
    - Create a Firebase project
    - Enable Google Sign-In in Authentication
-   - Download `google-services.json` and place it in `android/app/`
+   - Android: Download `google-services.json` and place it in `android/app/`
+   - iOS: Download `GoogleService-Info.plist` and place it in `ios/Runner/`
 
 4. Configure Gemini API:
    - Get an API key from Google AI Studio
@@ -86,15 +90,31 @@ lib/
 
 The Gemini API key must be passed at build time via `--dart-define`:
 
-### Debug APK
+### Android
+
+#### Debug APK
 ```bash
 flutter build apk --debug --dart-define=GEMINI_API_KEY=your_api_key_here
 ```
 
-### Release APK
+#### Release APK
 ```bash
 flutter build apk --release --dart-define=GEMINI_API_KEY=your_api_key_here
 ```
+
+### iOS
+
+#### IPA for TestFlight
+```bash
+flutter build ipa --dart-define=GEMINI_API_KEY=your_api_key_here --export-options-plist=ios/ExportOptions.plist
+```
+
+Upload to App Store Connect:
+```bash
+xcrun altool --upload-app --type ios -f build/ios/ipa/timelens.ipa --apiKey YOUR_API_KEY --apiIssuer YOUR_ISSUER_ID
+```
+
+iOS builds require manual code signing with an Apple Distribution certificate and App Store provisioning profile. See `ios/ExportOptions.plist` for the export configuration.
 
 ## License
 

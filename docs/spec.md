@@ -1,7 +1,7 @@
 # TimeLens - Project Specification
 
 ## Overview
-A simple Android app that lets users take photos or selfies and apply era-based filters using AI image transformation.
+A mobile app (Android and iOS) that lets users take photos or selfies and apply era-based filters using AI image transformation.
 
 ## Core Features
 
@@ -109,8 +109,8 @@ A simple Android app that lets users take photos or selfies and apply era-based 
 
 ### Client
 - **Framework:** Flutter (Dart)
-- **Target platforms:** Android first, then iOS
-- **Camera:** Flutter camera plugin with native CameraX integration
+- **Target platforms:** Android and iOS
+- **Camera:** Flutter camera plugin with native CameraX (Android) / AVFoundation (iOS) integration
 
 ### Backend & Infrastructure
 - **Cloud:** Google Cloud Platform (GCP)
@@ -133,13 +133,16 @@ A simple Android app that lets users take photos or selfies and apply era-based 
 - API key created ✓
 
 ### Distribution
-- **Method:** Firebase App Distribution
-- **Signing:** Debug builds (no release keystore required)
-- **Tester:** john.thomas@gmail.com
+- **Android:** Google Play Store (closed testing) and Firebase App Distribution
+- **iOS:** TestFlight via App Store Connect
+  - App name: "TimeLens - Age Yourself"
+  - Bundle ID: `com.timelens.timelens`
+  - Signing: Manual with Apple Distribution certificate
+  - Export config: `ios/ExportOptions.plist`
 
 ### Principles
 - Keep it simple and focused
-- Android first, iOS later
+- Cross-platform: Android and iOS from shared Flutter codebase
 - Firebase all the way for backend needs
 
 ---
